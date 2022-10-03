@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import axios from "axios";
 function ToyForm({ onAddToy }) {
   const [formData, setFormData] = useState({
     name: "",
@@ -20,22 +20,29 @@ function ToyForm({ onAddToy }) {
       ...formData,
       likes: 0,
     };
-
-    fetch("/toys", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newToy),
-    })
-      .then((r) => r.json())
-      .then((newToy) => {
-        setFormData({
-          name: "",
-          image: "",
-        });
-        onAddToy(newToy);
+    axios.post("/toys", newToy).then((response) => {
+      setFormData({
+        name: "",
+        image: "",
       });
+      onAddToy(newToy);
+    });
+
+    // fetch("/toys", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(newToy),
+    // })
+    //   .then((r) => r.json())
+    //   .then((newToy) => {
+    //     setFormData({
+    //       name: "",
+    //       image: "",
+    //     });
+    //     onAddToy(newToy);
+    //   });
   }
 
   return (
